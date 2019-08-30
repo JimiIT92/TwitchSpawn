@@ -34,7 +34,9 @@ import net.minecraft.util.text.TextFormatting;
 public class CommandTwitchSpawn extends CommandBase {
 
 	// Probably the ugliest way to allias test command
-	public static final HashMap<String, String> EVENT_TYPES = new HashMap<>(); {
+	public static final HashMap<String, String> EVENT_TYPES = new HashMap<>();
+
+	static {
 		EVENT_TYPES.put("donation", "donation|streamlabs");
 		EVENT_TYPES.put("d", "donation|streamlabs");
 
@@ -45,10 +47,10 @@ public class CommandTwitchSpawn extends CommandBase {
 		EVENT_TYPES.put("sub", "subscription|twitch_account");
 		EVENT_TYPES.put("subs", "subscription|twitch_account");
 		EVENT_TYPES.put("s", "subscription|twitch_account");
-		
+
 		EVENT_TYPES.put("follow", "follow|twitch_account");
 		EVENT_TYPES.put("f", "follow|twitch_account");
-		
+
 		EVENT_TYPES.put("host", "host|twitch_account");
 		EVENT_TYPES.put("h", "host|twitch_account");
 	}
@@ -70,7 +72,7 @@ public class CommandTwitchSpawn extends CommandBase {
 
 	@Override
 	public List<String> getTabCompletions(MinecraftServer server, ICommandSender sender, String[] args, BlockPos pos) {
-		if(args.length == 1) 
+		if(args.length == 1)
 			return getListOfStringsMatchingLastWord(args, "start", "stop", "reloadcfg", "status", "test"); //twitchspawn *
 
 		if(args.length == 2) {
@@ -107,7 +109,7 @@ public class CommandTwitchSpawn extends CommandBase {
 				// If sender is not the streamer or a moderator, send an error chat message.
 				String streamerNick = Configs.configJson.get("streamer_mc_nick").getAsString();
 				JsonArray moderators = Configs.configJson.get("moderator_mc_nicks").getAsJsonArray();
-				
+
 				if(!streamerNick.equalsIgnoreCase(sender.getName()) && !JSONHelper.jsonArrayContains(moderators, sender.getName()) ) {
 					TwitchSpawn.LOGGER.warn(sender.getName() + " tried to use TwitchSpawn commands but insufficient permissions.");
 					String msg = String.format("Only streamer %s or moderators can execute TwitchSpawn commands!", streamerNick!=null ? "("+streamerNick+")" : "");
@@ -199,7 +201,7 @@ public class CommandTwitchSpawn extends CommandBase {
 	public void moduleStatus(ICommandSender sender) {
 		if(StreamLabsSocket.isRunning())
 			MinecraftServerUtils.noticeChatFor(sender, ">> TwitchSpawn is currently running. [ON]", TextFormatting.AQUA);
-		else 
+		else
 			MinecraftServerUtils.noticeChatFor(sender, ">> TwitchSpawn is currently not running. [OFF]", TextFormatting.AQUA);
 	}
 
@@ -221,6 +223,7 @@ public class CommandTwitchSpawn extends CommandBase {
 			JSONObject donation = new JSONObject();
 			donation.put("from", username);
 			donation.put("amount", amount);
+			donation.put("name", "TesterDude");
 			donation.put("months", amount); // Ugly hacky wack
 			donation.put("viewers", amount); // Ugly hacky wack
 			donations.put(donation);

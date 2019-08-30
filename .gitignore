@@ -1,21 +1,22 @@
-# Build environment
-/bin
-/build
-/.gradle
-/gradle
-/.settings
-gradlew
-gradlew.bat
-/logs
-/libs
-/META-INF
-options.txt
+# eclipse
+bin
+*.launch
+.settings
+.metadata
+.classpath
+.project
 
-# Test environment
-/runServer
-/runClient
-/crash-reports
+# idea
+out
+*.ipr
+*.iws
+*.iml
+.idea
 
-# Launchers
-Forge_Client.launch
-ForgeServer.launch
+# gradle
+build
+.gradle
+
+# other
+eclipse
+run
